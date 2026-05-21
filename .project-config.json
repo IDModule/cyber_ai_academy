@@ -1,0 +1,43 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [
+    "server",
+    "db",
+    "user"
+  ],
+  "dev_command": "pnpm run dev",
+  "env_vars": {
+    "DATABASE_URL": "mysql://qDPyPFvDmJYx2Ak.root:eH028mF8currGKe60Cqs@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/kBU2zFD5iiHgQiu3GVdVX6?ssl={\"rejectUnauthorized\":true}"
+  },
+  "experiments": [
+    "no_db_push"
+  ],
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310419663031553144/kBU2zFD5iiHgQiu3GVdVX6",
+    "access_key_id": "ASIAZV3A2ECZEHMXIE73",
+    "secret_access_key": "ZsYBe9EY2qgIgcLoWaQlFhd5njuVYkqZLwMgXsDP",
+    "session_token": "IQoJb3JpZ2luX2VjEDgaCXVzLWVhc3QtMSJHMEUCIQDA3LINDslaYW4QimdzIHk+Q/eDkrHdWofk+o8wM6UYpwIgLQejMSu56y2pry+g4w9dzckT7i97YvKiJue/XVebjLcq9gMIARAEGgw2NjUzODYwOTg4NjYiDFbyfkxDlCdUR+kS7CrTAzK+01qyURN3Otz5eGqE+I5O3sMeusUvnEBlnujViqNcw/6QahKOE++yywrLonNZxIgAdf0Oi9bb+69ADqSkmHbHthCPU8CtlOZKaPQdoBTFBDn4vY7UKjwAq3AK9GPlD8UJOqsUQhM5u2YWdHkJVLdIq1Zg7sj1wN2NuoPxKbFXU9P2jlqYhJXekLFBSgvSJrtSXqqyhVdSgdcqS1+rikKHsh5iqOgo+S3/T/NdZmbbzhJlhgt3yMSuqTMAozZgg+0s0LrfhAvPOZQ30L1rCgQXzoDlbDYxZ0tYmx8xkQbGHmJUo+72soSKI3911/Dwsc13ETQHnRBmNsL6eG+QQyfltXrxwEqeY6H200Z/XfWOdj2RIs/JQVHX4yUJ8lCEejsDW2Y/i7Qh5d4XmpFyTcLRjtJnnFg0pQlI0NHjDRHBACq1I+GOSoUqmbve6Zgy7owSrE5HoaeydESN+mNHlwxWQFewwdIHiP0nCsKqiO8Cg2lQA2XkRSPVU+jkXmTxJI5M78DeooZ11VyN7G3UacABrM7vu0HX3fLvaNfsSDaoOrP0+q9chggVsM/bUwgWy4cv+OX4NSBGulPzeYRqfCvW7vbQpX+EPD5V+VPUd1c3XMpPMIPxutAGOp0BN1Bf640wx0EWvzdZc//nRKQfkSMR2PDFsDjtJeSYOqS4/Iox8vQtzuKLawho47snDPADKiSk4jrlKR5z2XEbGXR/UfkKMzSNZYpW+BxhlxXqY2ZdDVk9MMj6laODe34XDVeOAkt9Th8RLDAwbDgC5OxgI6f+EhIzuvMxN0536iC/eVjmlfCyMjQP3Ezvy1iwa2HtVG2tSGguTTD0dw==",
+    "expiration": "2026-05-21T19:47:15.000Z"
+  },
+  "name": "cyber_ai_academy",
+  "path": "/home/ubuntu/cyber_ai_academy",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "RCYToj4dMmhmfZcifHK8F5",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "ab75Gtu2iNLfuMknWvb7NY",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Yahya E",
+    "OWNER_OPEN_ID": "YcQEyL7eeuQV5rUT82QP87",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "77facc74-d38e-4bc2-a9b6-e3c3d682ab37",
+    "VITE_APP_ID": "kBU2zFD5iiHgQiu3GVdVX6",
+    "VITE_APP_LOGO": "",
+    "VITE_APP_TITLE": "أكاديمية سايبر الذكية",
+    "VITE_FRONTEND_FORGE_API_KEY": "3zJao98azDXJ8d8LXJ5xUW",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-db-user",
+  "test_command": "pnpm test"
+}

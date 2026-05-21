@@ -192,3 +192,50 @@ export async function markAllNotificationsRead(userId: number) {
     .set({ read: true })
     .where(eq(notifications.userId, userId));
 }
+
+// Leaderboard
+export async function getLeaderboard() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  // Get all users with their stats
+  const allUsers = await db.select({
+    id: users.id,
+    name: users.name,
+    avatarUrl: users.avatarUrl,
+  }).from(users);
+
+  const leaderboardData = [];
+  for (const u of allUsers) {
+    // Count completed lessons
+    const progress = await db.select().from(userProgress)
+      .where(and(eq(userProgress.userId, u.id), eq(userProgress.completed, true)));
+    
+    // Count badges
+    const userBadges = await db.select().from(badges)
+      .where(eq(badges.userId, u.id));
+    
+    // Count passed exams
+    const passedExams = await db.select().from(examAttempts)
+      .where(and(eq(examAttempts.userId, u.id), eq(examAttempts.passed, true)));
+    
+    // Calculate total score: lessons * 10 + badges * 25 + exams * 50
+    const totalScore = (progress.length * 10) + (userBadges.length * 25) + (passedExams.length * 50);
+    
+    if (totalScore > 0) {
+      leaderboardData.push({
+        userId: u.id,
+        name: u.name || "\u0645\u062a\u0639\u0644\u0645",
+        avatarUrl: u.avatarUrl,
+        completedLessons: progress.length,
+        badgesCount: userBadges.length,
+        passedExams: passedExams.length,
+        totalScore,
+      });
+    }
+  }
+
+  // Sort by totalScore descending
+  leaderboardData.sort((a, b) => b.totalScore - a.totalScore);
+  return leaderboardData.slice(0, 50); // Top 50
+}

@@ -10,7 +10,8 @@ import {
   saveExamAttempt, getExamAttempts,
   issueCertificate, getUserCertificates,
   awardBadge, getUserBadges,
-  createNotification, getUserNotifications, markNotificationRead, markAllNotificationsRead
+  createNotification, getUserNotifications, markNotificationRead, markAllNotificationsRead,
+  getLeaderboard
 } from "./db";
 import { GATES, BADGE_DEFINITIONS } from "../shared/courseData";
 
@@ -229,6 +230,13 @@ ${input.context ? `\nالسياق الحالي: ${input.context}` : ""}`
       } catch (e) {
         return { answer: "عذرًا، حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا." };
       }
+    }),
+  }),
+
+  // Leaderboard (public)
+  leaderboard: router({
+    get: publicProcedure.query(async () => {
+      return getLeaderboard();
     }),
   }),
 

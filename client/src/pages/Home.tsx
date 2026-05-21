@@ -28,6 +28,9 @@ export default function Home() {
                 <Button variant="ghost" onClick={() => navigate("/gates")}>
                   الأبواب التعليمية
                 </Button>
+                <Button variant="ghost" onClick={() => navigate("/leaderboard")}>
+                  الصدارة
+                </Button>
                 <Button variant="default" onClick={() => navigate("/gates")}>
                   ابدأ التعلم
                 </Button>

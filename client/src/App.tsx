@@ -11,6 +11,7 @@ import Exercises from "./pages/Exercises";
 import Exam from "./pages/Exam";
 import Dashboard from "./pages/Dashboard";
 import Certificates from "./pages/Certificates";
+import Leaderboard from "./pages/Leaderboard";
 
 function Router() {
   return (
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/exam/:gateId" component={Exam} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/certificates" component={Certificates} />
+      <Route path="/leaderboard" component={Leaderboard} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

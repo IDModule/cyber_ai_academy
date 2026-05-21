@@ -112,6 +112,15 @@ describe("course.gateExam", () => {
   });
 });
 
+describe("leaderboard.get", () => {
+  it("returns leaderboard data as public procedure", async () => {
+    const ctx = createPublicContext();
+    const caller = appRouter.createCaller(ctx);
+    const leaderboard = await caller.leaderboard.get();
+    expect(Array.isArray(leaderboard)).toBe(true);
+  });
+});
+
 describe("protected routes require auth", () => {
   it("progress.get throws unauthorized for unauthenticated user", async () => {
     const ctx = createPublicContext();

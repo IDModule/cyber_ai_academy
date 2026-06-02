@@ -14,6 +14,7 @@ import {
   getLeaderboard
 } from "./db";
 import { GATES, BADGE_DEFINITIONS } from "../shared/courseData";
+import { registerUser, loginUser, createSessionToken } from "./customAuth";
 
 export const appRouter = router({
   system: systemRouter,
@@ -23,6 +24,35 @@ export const appRouter = router({
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
       return { success: true } as const;
+    }),
+    register: publicProcedure.input(z.object({
+      name: z.string().min(2, "الاسم يجب أن يكون حرفين على الأقل"),
+      email: z.string().email("البريد الإلكتروني غير صالح"),
+      password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
+    })).mutation(async ({ ctx, input }) => {
+      const result = await registerUser(input.name, input.email, input.password);
+      if (!result.success || !result.user) {
+        return { success: false, error: result.error };
+      }
+      // Create session
+      const token = await createSessionToken(result.user.id, result.user.openId || "", result.user.name || "");
+      const cookieOptions = getSessionCookieOptions(ctx.req);
+      ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: 365 * 24 * 60 * 60 * 1000 });
+      return { success: true };
+    }),
+    login: publicProcedure.input(z.object({
+      email: z.string().email("البريد الإلكتروني غير صالح"),
+      password: z.string().min(1, "كلمة المرور مطلوبة"),
+    })).mutation(async ({ ctx, input }) => {
+      const result = await loginUser(input.email, input.password);
+      if (!result.success || !result.user) {
+        return { success: false, error: result.error };
+      }
+      // Create session
+      const token = await createSessionToken(result.user.id, result.user.openId || "", result.user.name || "");
+      const cookieOptions = getSessionCookieOptions(ctx.req);
+      ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: 365 * 24 * 60 * 60 * 1000 });
+      return { success: true };
     }),
   }),
 
@@ -38,7 +68,6 @@ export const appRouter = router({
       score: z.number().default(0),
     })).mutation(async ({ ctx, input }) => {
       await upsertProgress(ctx.user.id, input.lessonId, input.gateId, input.completed, input.score);
-      // Check for first lesson badge
       if (input.completed) {
         const progress = await getUserProgress(ctx.user.id);
         const completedLessons = progress.filter(p => p.completed);
@@ -63,7 +92,6 @@ export const appRouter = router({
       passed: z.boolean(),
     })).mutation(async ({ ctx, input }) => {
       await saveExerciseAttempt(ctx.user.id, input.lessonId, input.exerciseId, input.answers, input.score, input.totalQuestions, input.passed);
-      // Check for all exercises badge
       if (input.passed) {
         const gate = GATES.find(g => g.lessons.some(l => l.id === input.lessonId));
         if (gate) {
@@ -101,7 +129,6 @@ export const appRouter = router({
       totalQuestions: z.number(),
       passed: z.boolean(),
     })).mutation(async ({ ctx, input }) => {
-      // Generate AI feedback
       let feedback = "";
       try {
         const gate = GATES.find(g => g.id === input.gateId);
@@ -121,28 +148,22 @@ export const appRouter = router({
 
       await saveExamAttempt(ctx.user.id, input.gateId, input.answers, input.score, input.totalQuestions, input.passed, feedback);
 
-      // If passed, check for badges and certificates
       if (input.passed) {
-        // Perfect score badge
         if (input.score === input.totalQuestions) {
           const badge = BADGE_DEFINITIONS.find(b => b.type === "perfect_score")!;
           await awardBadge(ctx.user.id, badge.type, badge.name, badge.description);
           await createNotification(ctx.user.id, "badge_earned", "شارة جديدة!", `حصلت على شارة "${badge.name}" - درجة كاملة!`);
         }
 
-        // Gate complete badge
         const gateBadge = BADGE_DEFINITIONS.find(b => b.type === "gate_complete")!;
         await awardBadge(ctx.user.id, `${gateBadge.type}_${input.gateId}`, gateBadge.name, gateBadge.description);
 
-        // Issue certificate
         const userName = ctx.user.name || "متعلم";
         const certNumber = await issueCertificate(ctx.user.id, input.gateId, "gate", userName);
 
-        // Notification
         const gate = GATES.find(g => g.id === input.gateId);
         await createNotification(ctx.user.id, "gate_complete", "تهانينا!", `أكملت "${gate?.title}" بنجاح وحصلت على شهادة إتمام!`);
 
-        // Check if all gates completed for platform certificate
         const allGateIds = GATES.map(g => g.id);
         let allCompleted = true;
         for (const gid of allGateIds) {

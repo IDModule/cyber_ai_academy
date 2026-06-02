@@ -1,6 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { getLoginUrl } from "@/const";
 import { Shield, Lock, AlertTriangle, Zap, Award, Brain, ChevronLeft, Sparkles } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -38,7 +37,7 @@ export default function Home() {
             ) : (
               <Button
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
-                onClick={() => window.location.href = getLoginUrl()}
+                onClick={() => navigate("/login")}
               >
                 تسجيل الدخول
               </Button>
@@ -86,7 +85,7 @@ export default function Home() {
                 <Button
                   size="lg"
                   className="text-lg px-8 py-6 bg-primary text-primary-foreground hover:bg-primary/90 cyber-glow"
-                  onClick={() => window.location.href = getLoginUrl()}
+                  onClick={() => navigate("/register")}
                 >
                   سجّل مجانًا وابدأ
                   <ChevronLeft className="w-5 h-5 mr-2" />
@@ -228,7 +227,7 @@ export default function Home() {
               <Button
                 size="lg"
                 className="text-lg px-8 bg-primary text-primary-foreground"
-                onClick={() => window.location.href = getLoginUrl()}
+                onClick={() => navigate("/register")}
               >
                 سجّل مجانًا
               </Button>

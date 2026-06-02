@@ -12,11 +12,15 @@ import Exam from "./pages/Exam";
 import Dashboard from "./pages/Dashboard";
 import Certificates from "./pages/Certificates";
 import Leaderboard from "./pages/Leaderboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
       <Route path="/gates" component={Gates} />
       <Route path="/lesson/:lessonId" component={Lesson} />
       <Route path="/exercises/:lessonId" component={Exercises} />
